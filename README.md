@@ -1,3 +1,4 @@
+![Logo](https://github.com/markdownium.png)
 # Markdownium
 
 A blazingly fast, minimal wiki engine that doesn't suck.
