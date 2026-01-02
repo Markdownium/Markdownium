@@ -1,3 +1,4 @@
+import * as sass from "https://jspm.dev/sass";
 class ThemeManager {
   constructor() {
     this.currentTheme = null;
@@ -77,16 +78,23 @@ class ThemeManager {
 
   async loadSCSS(href) {
     if (this.loadedStylesheets.has(href)) return;
-    return new Promise((resolve, reject) => {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = href;
-      link.onload = () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch(href);
+        if (!response.ok) throw new Error(`failed to fetch SCSS: ${href}`);
+        const scssContent = await response.text();
+        const cssContent = sass.compileString(scssContent).css;
+        const style = document.createElement("style");
+        style.textContent = cssContent;
+        style.setAttribute("data-scss-source", href);
+        document.head.appendChild(style);
         this.loadedStylesheets.add(href);
+        console.log("SCSS compiled and loaded:", href);
         resolve();
-      };
-      link.onerror = reject;
-      document.head.appendChild(link);
+      } catch (error) {
+        console.error("failed to compile SCSS:", href, error);
+        reject(error);
+      }
     });
   }
 
@@ -109,6 +117,10 @@ class ThemeManager {
       const link = document.querySelector(`link[href="${href}"]`);
       if (link) {
         link.remove();
+      }
+      const style = document.querySelector(`style[data-scss-source="${href}"]`);
+      if (style) {
+        style.remove();
       }
     });
 
