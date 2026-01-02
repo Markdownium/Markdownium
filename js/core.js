@@ -1,16 +1,19 @@
 import { Router } from "./router.js";
 import { Renderer } from "./renderer.js";
+import { ThemeManager } from "./theme.js";
 
 class Markdownium {
   constructor() {
     this.config = null;
     this.router = null;
     this.renderer = null;
+    this.themeManager = null;
   }
 
   async init() {
     try {
       await this.loadConfig();
+      await this.setupTheme();
       this.setupRenderer();
       this.setupRouter();
       this.initializeUI();
@@ -29,6 +32,11 @@ class Markdownium {
     const response = await fetch("/config.json");
     if (!response.ok) throw new Error("config not found, somehow");
     this.config = await response.json();
+  }
+
+  async setupTheme() {
+    this.themeManager = new ThemeManager();
+    await this.themeManager.loadTheme(this.config.theme);
   }
 
   setupRenderer() {

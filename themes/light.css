@@ -1,0 +1,22 @@
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
+    --bg-hover: #f1f3f4;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --text-tertiary: #adb5bd;
+    --accent: #212529;
+    --accent-hover: #000000;
+    --accent-dim: rgba(33, 37, 41, 0.1);
+    --border: #dee2e6;
+    --border-bright: #ced4da;
+    --code-bg: #f8f9fa;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --glow: rgba(33, 37, 41, 0.1);
+}
+
+::selection {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
