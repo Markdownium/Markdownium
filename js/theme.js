@@ -1,4 +1,3 @@
-import * as sass from "https://jspm.dev/sass";
 class ThemeManager {
   constructor() {
     this.currentTheme = null;
@@ -8,20 +7,15 @@ class ThemeManager {
 
   async loadTheme(themeConfig) {
     await this.unloadTheme();
-    await this.loadDefaultTheme();
+
     if (!themeConfig) {
       console.log("no theme config provided. using default");
       this.currentTheme = "default";
       return;
     }
 
-    if (themeConfig.name === "default") {
-      console.log("theme name is default. skipping custom files");
-      this.currentTheme = "default";
-      return;
-    }
+    this.currentTheme = themeConfig.name || "default";
 
-    this.currentTheme = themeConfig.name || "custom";
     if (themeConfig.css && themeConfig.css.length > 0) {
       for (const cssPath of themeConfig.css) {
         await this.loadCSS(cssPath);
@@ -47,10 +41,36 @@ class ThemeManager {
     } else {
       console.log("no JS files to load");
     }
+
+    this.applyThemeSettings(themeConfig);
   }
 
-  async loadDefaultTheme() {
-    await this.loadCSS("css/theme.css");
+  applyThemeSettings(themeConfig) {
+    const body = document.body;
+
+    if (themeConfig.colorScheme) {
+      body.setAttribute("data-theme", themeConfig.colorScheme);
+    }
+
+    if (themeConfig.layout) {
+      body.className = `layout-${themeConfig.layout}`;
+    }
+
+    if (themeConfig.faviconEmoji) {
+      this.setFaviconEmoji(themeConfig.faviconEmoji);
+    }
+  }
+
+  setFaviconEmoji(emoji) {
+    const existingFavicon = document.querySelector('link[rel="icon"]');
+    if (existingFavicon) {
+      existingFavicon.remove();
+    }
+
+    const link = document.createElement("link");
+    link.rel = "icon";
+    link.href = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>${emoji}</text></svg>`;
+    document.head.appendChild(link);
   }
 
   async loadCSS(href) {
@@ -83,14 +103,20 @@ class ThemeManager {
         const response = await fetch(href);
         if (!response.ok) throw new Error(`failed to fetch SCSS: ${href}`);
         const scssContent = await response.text();
-        const cssContent = sass.compileString(scssContent).css;
-        const style = document.createElement("style");
-        style.textContent = cssContent;
-        style.setAttribute("data-scss-source", href);
-        document.head.appendChild(style);
-        this.loadedStylesheets.add(href);
-        console.log("SCSS compiled and loaded:", href);
-        resolve();
+        try {
+          const { compileString } = await import("https://jspm.dev/sass");
+          const cssContent = compileString(scssContent).css;
+          const style = document.createElement("style");
+          style.textContent = cssContent;
+          style.setAttribute("data-scss-source", href);
+          document.head.appendChild(style);
+          this.loadedStylesheets.add(href);
+          console.log("SCSS compiled and loaded:", href);
+          resolve();
+        } catch (sassError) {
+          console.error("SASS compilation error:", sassError);
+          reject(sassError);
+        }
       } catch (error) {
         console.error("failed to compile SCSS:", href, error);
         reject(error);
@@ -102,6 +128,7 @@ class ThemeManager {
     if (this.loadedScripts.has(src)) return;
     return new Promise((resolve, reject) => {
       const script = document.createElement("script");
+      script.type = "module";
       script.src = src;
       script.onload = () => {
         this.loadedScripts.add(src);

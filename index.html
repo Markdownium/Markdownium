@@ -1,42 +1,45 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Loading...</title>
         <link rel="stylesheet" href="css/external/github.min.css" />
-    </head>
-    <body>
-        <div id="app">
-            <header>
-                <div class="header-content">
-                    <div class="logo-section">
-                        <img id="site-logo" src="" alt="" />
-                        <h1 id="site-name"></h1>
-                    </div>
-                    <div class="top-links" id="top-links"></div>
-                </div>
-            </header>
-            <div class="container">
-                <aside id="sidebar"></aside>
-                <main id="content"></main>
-            </div>
-            <footer>
-                <div class="footer-content">
-                    <span id="license-badge"></span>
-                    <a href="https://github.com/Markdownium"
-                        ><span
-                            >Powered by
-                            <span style="color: var(--text-primary)"
-                                ><b><u>M↓</u></b
-                                ><i>ium</i></span
-                            ></span
-                        ></a
-                    >
-                </div>
-            </footer>
-        </div>
         <script src="js/external/purify.min.js"></script>
         <script type="module" src="js/core.js"></script>
+        <meta name="theme-color" content="#211f1a" />
+        <meta name="color-scheme" content="dark" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <meta name="robots" content="index, follow" />
+    </head>
+    <body class="layout-center">
+        <a class="skip-to-content" href="#main">Skip to content</a>
+        <header class="header">
+            <div class="header-container">
+                <span class="header-logo-container">
+                    <a href="#/" class="logo" id="site-logo-link">
+                        <span id="site-name"></span>
+                    </a>
+                </span>
+                <button
+                    class="main-menu-dropdown-button"
+                    popovertarget="main-menu-items"
+                    aria-label="Toggle menu"
+                ></button>
+            </div>
+            <nav class="main-menu" id="main-menu"></nav>
+        </header>
+
+        <main id="main">
+            <div class="loading">Loading...</div>
+        </main>
+
+        <footer class="footer" id="footer">
+            <div class="socials" id="socials"></div>
+            <p class="copyright" id="copyright"></p>
+        </footer>
+
+        <ul class="main-menu-items" id="main-menu-items" popover></ul>
     </body>
 </html>

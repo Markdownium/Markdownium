@@ -6,11 +6,17 @@ export class Router {
 
   async navigate(path) {
     const route = this.parsePath(path);
-    const contentElement = document.getElementById("content");
+    const contentElement = document.getElementById("main");
     contentElement.innerHTML = '<div class="loading">Loading...</div>';
     try {
-      const content = await this.fetchContent(route.page);
-      contentElement.innerHTML = this.renderer.render(content);
+      let content;
+      if (route.page === "home") {
+        content = await this.fetchHomePage();
+      } else {
+        content = await this.fetchContent(route.page);
+      }
+
+      contentElement.innerHTML = this.renderer.render(content, route);
       window.history.pushState(
         {},
         "",
@@ -27,9 +33,31 @@ export class Router {
       } else {
         window.scrollTo(0, 0);
       }
+
+      this.updatePageTitle(route.page);
     } catch (error) {
-      contentElement.innerHTML = `<div class="error" onclick="alert('pedantic people will know this is actually 200 but stfu')" style="cursor: pointer; text-decoration: underline;">error 404*; ${route.page}</div>`;
+      contentElement.innerHTML = `<div class="error" onclick="alert('Content not found')" style="cursor: pointer; text-decoration: underline;">404: ${route.page}</div>`;
     }
+  }
+
+  async fetchHomePage() {
+    return await this.fetchContent("home");
+  }
+
+  renderHomePage(homeContent, blogContent) {
+    const homeSection = homeContent.split("---")[2] || "";
+    return `<header class="content framed">
+${homeSection}
+</header>
+${blogContent}`;
+  }
+
+  updatePageTitle(page) {
+    const titles = {
+      home: this.config.siteName,
+    };
+
+    document.title = titles[page] || `${page} - ${this.config.siteName}`;
   }
 
   parsePath(path) {

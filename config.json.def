@@ -1,12 +1,49 @@
 {
-  "siteName": "M↓ium Wiki",
-  "logo": "https://github.com/markdownium.png",
+  "siteName": "Markdownium",
+  "logo": "",
   "baseUrl": "http://localhost:3000/content/",
-  "licenseBadge": "<a href=\"https://www.gnu.org/licenses/fdl-1.3.html\" target=\"_blank\"><img src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/GFDL_Logo.svg/100px-GFDL_Logo.svg.png\"></img></a>",
+  "licenseBadge": "",
   "theme": {
     "name": "terminus",
-    "css": [],
-    "js": ["ignored/js/theme-switcher.js"],
-    "scss": ["ignored/terminus.scss"]
-  }
+    "css": [
+      "ignored/terminus/css/main.css",
+      "ignored/terminus/css/header.css",
+      "ignored/terminus/css/menu.css",
+      "ignored/terminus/css/footer.css",
+      "ignored/terminus/css/post.css",
+      "ignored/terminus/css/code.css",
+      "ignored/terminus/css/components.css"
+    ],
+    "js": [
+      "ignored/terminus/js/theme-switcher.js",
+      "ignored/terminus/js/responsive.js"
+    ],
+    "colorScheme": "terminus",
+    "colorSchemeSwitcher": true,
+    "copyButton": true,
+    "layout": "center",
+    "faviconEmoji": "👨‍💻",
+    "closeResponsiveMenuOnResize": true
+  },
+  "mainMenu": [
+    { "name": "blog", "url": "blog", "trailingSlash": true },
+    { "name": "archive", "url": "archive", "trailingSlash": true },
+    { "name": "tags", "url": "tags", "trailingSlash": true },
+    { "name": "projects", "url": "projects", "trailingSlash": true },
+    {
+      "name": "github",
+      "url": "https://github.com/ebkalderon/terminus",
+      "newTab": true
+    }
+  ],
+  "socials": [
+    { "name": "email", "url": "mailto:hello@example.com" },
+    { "name": "github", "url": "https://github.com/ebkalderon" },
+    { "name": "linkedin", "url": "https://www.linkedin.com/in/ebkalderon" },
+    { "name": "mastodon", "url": "https://hachyderm.io/@ebkalderon" },
+    {
+      "name": "keyoxide",
+      "url": "https://keyoxide.org/d5ad5bd47835b0f0b0c3046c00ab4c0942dcba25"
+    }
+  ]
 }
