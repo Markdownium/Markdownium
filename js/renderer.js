@@ -1,6 +1,6 @@
-import { Marked } from "./js/external/marked.esm.js";
-import { markedHighlight } from "./js/external/marked-highlight.esm.js";
-import hljs from "./js/external/highlight.js";
+import { Marked } from "./external/marked.esm.js";
+import { markedHighlight } from "./external/marked-highlight.esm.js";
+import hljs from "./external/highlight.js";
 export class Renderer {
   constructor(config) {
     this.config = config;
@@ -12,7 +12,7 @@ export class Renderer {
 
   async initHighlightJS() {
     try {
-      const highlightJs = await import("./js/external/highlight.js");
+      const highlightJs = await import("./external/highlight.js");
       console.log(
         highlightJs.default.highlight("console.log('h');", { language: "js" })
           .value,
