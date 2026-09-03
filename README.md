@@ -13,13 +13,19 @@ A blazingly fast, minimal wiki engine that doesn't suck.
 - **XSS protection** - Safe content rendering
 - **Auto header IDs** - Clickable headers for deep linking
 - **Smooth scrolling** - Navigate to sections seamlessly
+- **RSS & Atom feeds** - Subscribe to content updates
 
 ## Setup
 
 1. Copy `config.json.def` to `config.json`
 2. Configure your settings
 3. Place Markdown files in `content/` directory
-4. Serve with any static web server
+4. Serve with any static web server, or use the bundled Node.js server for feed support:
+
+```bash
+npm install
+npm start
+```
 
 ## Configuration
 
@@ -43,3 +49,20 @@ A blazingly fast, minimal wiki engine that doesn't suck.
 ## Deployment
 
 Deploy to any static hosting service - GitHub Pages, Netlify, Vercel, etc. No server requirements beyond serving static files.
+
+### Development Server with Feeds
+
+To enable RSS and Atom feeds locally:
+
+```bash
+npm install
+npm start
+```
+
+The server will be available at `http://localhost:3000` with feeds at:
+- RSS: `http://localhost:3000/feed.rss`
+- Atom: `http://localhost:3000/feed.atom`
+
+### Feed Content
+
+Posts are generated from `.md` files in `content/`. Special files (`sidebar.md`, `top.md`, `home.md`) are excluded from feeds. The title is extracted from the first `# heading` in each file, or falls back to the filename. Publication date is derived from the file modification time.
